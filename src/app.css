@@ -1,0 +1,22 @@
+body {
+    background-color: black;
+    color: white;
+}
+.button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition-duration: 600ms;
+    color: red;
+    background-color: black;
+    border: solid red 3px;
+    border-radius: 20px;
+    width: 7.5em;
+    height: 1.5em;
+}
+.button:hover {
+    color: black;
+    background-color: red;
+    cursor: pointer;
+    width: 8em;
+}

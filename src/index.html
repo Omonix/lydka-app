@@ -10,12 +10,35 @@
     <script defer src="./app.js"></script>
   </head>
   <body>
-    <div>
-      <canvas class="graph"></canvas>
-      <div class="button addPeriod">Add period</div>
-      <div class="button removePeriod">Remove period</div>
-      <div class="button addDay">Add day</div>
-      <div class="button removeDay">Remove day</div>
+    <div class="main">
+      <div class="test"><canvas class="graph"></canvas></div>
+      <div class="buttonGraph">
+        <div class="button addPeriod">Ajouter une période</div>
+        <div class="button removeDay">-</div>
+        <div class="inputDayNum">
+          <input class="inputNum" type="number" value="8" />
+        </div>
+        <div class="button addDay">+</div>
+        <div class="button removePeriod">Supprimer une periode</div>
+        <div class="button magic">magic</div>
+      </div>
+      <div class="infoPain">
+        <div class="colorChoice">
+          <div class="coloGreen"></div>
+          <input class="inputColorGreen" type="number" value="3" />
+        </div>
+        <div class="colorChoice">
+          <div class="coloYellow"></div>
+          <input class="inputColorYellow" type="number" value="6" />
+        </div>
+        <div class="colorChoice">
+          <div class="colOrange"></div>
+          <input class="inputColorOrange" type="number" value="8" />
+        </div>
+        <div class="colorMain">
+          <input type="color" class="masterColor" value="#CF48A0" />
+        </div>
+      </div>
     </div>
   </body>
 </html>

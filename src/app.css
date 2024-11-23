@@ -1,22 +1,112 @@
+:root {
+    --main-color: rgb(207, 72, 160);
+    --main-color-opacity: rgba(207, 72, 160, 0.4);
+}
 body {
-    background-color: black;
+    background-color: rgb(10, 10, 10);
     color: white;
+}
+input::-webkit-inner-spin-button,
+input::-webkit-outer-spin-button { 
+	-webkit-appearance: none;
+}
+input:focus {
+    outline-style: none;
 }
 .button {
     display: flex;
     justify-content: center;
     align-items: center;
     transition-duration: 600ms;
-    color: red;
-    background-color: black;
-    border: solid red 3px;
+    color: var(--main-color);
+    background-color: rgb(10, 10, 10);
+    border: solid var(--main-color) 3px;
     border-radius: 20px;
-    width: 7.5em;
+    width: 11em;
     height: 1.5em;
 }
 .button:hover {
-    color: black;
-    background-color: red;
+    color: rgb(10, 10, 10);
+    background-color: var(--main-color);
     cursor: pointer;
-    width: 8em;
+    width: 9.2em;
+}
+.buttonGraph {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.removeDay,
+.addDay {
+    width: 2em;
+}
+.removeDay:hover,
+.addDay:hover {
+    width: 3em;
+}
+.removeDay {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-right: none;
+}
+.addDay {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-left: none;
+}
+.inputNum {
+    border: solid var(--main-color) 3px;
+    background-color: rgb(10, 10, 10);
+    color: var(--main-color);
+    height: 1.65em;
+    width: 3em;
+    transition-duration: 600ms;
+    text-align: center;
+}
+.inputNum:focus {
+    background-color: var(--main-color);
+    color: black;
+}
+.test {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40em;
+}
+.coloGreen, 
+.coloYellow,
+.colOrange,
+.coloRed {
+    width: 2em;
+    height: auto;
+}
+.coloGreen {
+    background-color: rgb(0, 255, 0);
+}
+.coloYellow {
+    background-color: rgb(255, 190, 0);
+}
+.colOrange {
+    background-color: rgb(255, 90, 0);
+}
+.coloRed {
+    background-color: rgb(255, 0, 0);
+}
+.colorChoice {
+    display: flex;
+}
+.inputColorGreen,
+.inputColorYellow,
+.inputColorOrange {
+    background-color: rgb(10, 10, 10);
+    border: solid var(--main-color) 3px;
+    border-radius: 20px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-left: none;
+    color: var(--main-color);
+    height: 1.65em;
+    width: 3em;
+    transition-duration: 600ms;
+    text-align: center;
 }

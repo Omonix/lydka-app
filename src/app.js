@@ -279,3 +279,25 @@ document.querySelector(".choiceRed").addEventListener("change", () => {
   redPain.color = [newColor[0], newColor[1], newColor[2]];
   lb_resetGraphColor();
 });
+document.querySelector(".modeSwitcher").addEventListener("click", () => {
+  mode = document.querySelector(".modeSwitcher").innerHTML;
+  if (mode === "Dark") {
+    document.querySelector(".modeSwitcher").innerHTML = "Light";
+    document
+      .querySelector(":root")
+      .style.setProperty("--main-background", "#dee1e0");
+    document.querySelector(":root").style.setProperty("--color", "#dee1e0");
+    document
+      .querySelector(":root")
+      .style.setProperty("--reverse-color", "#000000");
+  } else {
+    document.querySelector(".modeSwitcher").innerHTML = "Dark";
+    document
+      .querySelector(":root")
+      .style.setProperty("--main-background", "#0f0f0f");
+    document.querySelector(":root").style.setProperty("--color", "#000000");
+    document
+      .querySelector(":root")
+      .style.setProperty("--reverse-color", "##dee1e0");
+  }
+});

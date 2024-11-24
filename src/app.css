@@ -1,13 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&family=Playwrite+HR+Lijeva:wght@100..400&display=swap');
+* {
+    transition-duration: 300ms;
+}
 :root {
     --main-color: rgb(207, 72, 160);
     --main-color-opacity: rgba(207, 72, 160, 0.4);
     --main-background: rgb(15, 15, 15);
+    --reverse-color: #dee1e0;
+    color-scheme: light dark;
 }
 body {
     background-color: var(--main-background);
     font-family: 'Exo 2';
-    color: white;
+    color: var(--reverse-color);
 }
 input::-webkit-inner-spin-button,
 input::-webkit-outer-spin-button { 
@@ -74,6 +79,36 @@ input:focus {
     margin-top: -0.5em;
     margin-left: 0.75em;
 }
+.modeSwitcher {
+    color: var(--main-background);
+    background-color: var(--reverse-color);
+    border-radius: 20px;
+    padding: 0.25em 1em;
+}
+.modeSwitcher:hover {
+    color: var(--main-color);
+    background-color: var(--main-color-opacity);
+    cursor: pointer;
+}
+.input {
+    color: var(--main-color);
+    background-color: var(--main-background);
+    border: solid var(--main-color) 3px;
+    border-radius: 20px;
+    padding: 0.25em 1em;
+}
+.input:hover,
+.input:focus {
+    color: var(--main-background);
+    background-color: var(--main-color);
+}
+.input::placeholder {
+    color: var(--main-color-opacity);
+}
+.input:focus::placeholder,
+.input:hover::placeholder {
+    color: var(--main-background);
+}
 .button {
     display: flex;
     justify-content: center;
@@ -82,7 +117,6 @@ input:focus {
     background-color: var(--main-background);
     border: solid var(--main-color) 3px;
     border-radius: 20px;
-    transition-duration: 600ms;
     padding: 0.25em 0.75em;
 }
 .button:hover {
@@ -107,21 +141,10 @@ input:focus {
     border-left: none;
 }
 .inputNum {
-    border: solid var(--main-color) 3px;
-    background-color: var(--main-background);
-    color: var(--main-color);
-    height: 1.65em;
+    height: 1.3em;
     width: 3em;
-    transition-duration: 600ms;
     text-align: center;
-}
-.inputNum:hover {
-    background-color: var(--main-color);
-    color: var(--main-background);
-}
-.inputNum:focus {
-    background-color: var(--main-color);
-    color: var(--main-background);
+    border-radius: 0;
 }
 .test {
     display: flex;
@@ -135,15 +158,10 @@ input:focus {
 .inputColorGreen,
 .inputColorYellow,
 .inputColorOrange {
-    background-color: var(--main-background);
-    border: solid var(--main-color) 3px;
-    border-radius: 20px;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
     border-left: none;
-    color: var(--main-color);
-    height: 1.65em;
-    width: 3em;
-    transition-duration: 600ms;
+    height: 1.2em;
+    width: 1.5em;
     text-align: center;
 }

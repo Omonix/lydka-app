@@ -1,9 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&family=Playwrite+HR+Lijeva:wght@100..400&display=swap');
 :root {
     --main-color: rgb(207, 72, 160);
     --main-color-opacity: rgba(207, 72, 160, 0.4);
+    --main-background: rgb(15, 15, 15);
 }
 body {
-    background-color: rgb(10, 10, 10);
+    background-color: var(--main-background);
+    font-family: 'Exo 2';
     color: white;
 }
 input::-webkit-inner-spin-button,
@@ -13,36 +16,85 @@ input::-webkit-outer-spin-button {
 input:focus {
     outline-style: none;
 }
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.header {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-bottom: solid var(--main-color) 3px;
+    height: 10em;
+    width: 100%;
+}
+.home {
+    position: relative;
+    scale: 0.8;
+}
+.bodyHome {
+    height: 2.2em;
+    width: 2em;
+    border-radius: 5px;
+    background-color: var(--main-color);
+}
+.toit1 {
+    height: 0.5em;
+    width: 2.25em;
+    border-radius: 5px;
+    background-color: var(--main-color);
+    rotate: -45deg;
+    margin-left: -0.85em;
+    position: absolute;
+}
+.toit2 {
+    height: 0.5em;
+    width: 2.25em;
+    border-radius: 5px;
+    background-color: var(--main-color);
+    rotate: 45deg;
+    margin-left: 0.55em;
+    position: absolute;
+}
+.chemi {
+    height: 2em;
+    width: 0.5em;
+    background-color: var(--main-color);
+    border-radius: 5px;
+    position: absolute;
+    margin-top: -0.7em;
+    margin-left: 1.4em;
+}
+.combler {
+    height: 2em;
+    width: 0.5em;
+    background-color: var(--main-color);
+    position: absolute;
+    margin-top: -0.5em;
+    margin-left: 0.75em;
+}
 .button {
     display: flex;
     justify-content: center;
     align-items: center;
-    transition-duration: 600ms;
     color: var(--main-color);
-    background-color: rgb(10, 10, 10);
+    background-color: var(--main-background);
     border: solid var(--main-color) 3px;
     border-radius: 20px;
-    width: 11em;
-    height: 1.5em;
+    transition-duration: 600ms;
+    padding: 0.25em 0.75em;
 }
 .button:hover {
-    color: rgb(10, 10, 10);
+    color: var(--main-background);
     background-color: var(--main-color);
     cursor: pointer;
-    width: 9.2em;
+    padding: 0.3em 1em;
 }
 .buttonGraph {
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
-}
-.removeDay,
-.addDay {
-    width: 2em;
-}
-.removeDay:hover,
-.addDay:hover {
-    width: 3em;
 }
 .removeDay {
     border-top-right-radius: 0;
@@ -56,16 +108,20 @@ input:focus {
 }
 .inputNum {
     border: solid var(--main-color) 3px;
-    background-color: rgb(10, 10, 10);
+    background-color: var(--main-background);
     color: var(--main-color);
     height: 1.65em;
     width: 3em;
     transition-duration: 600ms;
     text-align: center;
 }
+.inputNum:hover {
+    background-color: var(--main-color);
+    color: var(--main-background);
+}
 .inputNum:focus {
     background-color: var(--main-color);
-    color: black;
+    color: var(--main-background);
 }
 .test {
     display: flex;
@@ -73,32 +129,13 @@ input:focus {
     align-items: center;
     height: 40em;
 }
-.coloGreen, 
-.coloYellow,
-.colOrange,
-.coloRed {
-    width: 2em;
-    height: auto;
-}
-.coloGreen {
-    background-color: rgb(0, 255, 0);
-}
-.coloYellow {
-    background-color: rgb(255, 190, 0);
-}
-.colOrange {
-    background-color: rgb(255, 90, 0);
-}
-.coloRed {
-    background-color: rgb(255, 0, 0);
-}
 .colorChoice {
     display: flex;
 }
 .inputColorGreen,
 .inputColorYellow,
 .inputColorOrange {
-    background-color: rgb(10, 10, 10);
+    background-color: var(--main-background);
     border: solid var(--main-color) 3px;
     border-radius: 20px;
     border-top-left-radius: 0;

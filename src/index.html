@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" sizes="60x60" href="../icons8-accueil-30.png" />
     <title>Lydka</title>
     <link rel="stylesheet" href="../reset.css" />
     <link rel="stylesheet" href="./app.css" />
@@ -10,30 +11,49 @@
     <script defer src="./app.js"></script>
   </head>
   <body>
+    <div class="header">
+      <div class="home">
+        <div class="chemi"></div>
+        <div class="combler"></div>
+        <div class="toit1"></div>
+        <div class="toit2"></div>
+        <div class="bodyHome"></div>
+      </div>
+      <div class="container">
+        <input class="inputSearch" type="search" placeholder="rechercher" />
+        <div class="button">Rechercher</div>
+      </div>
+      <div class="mode">Dark</div>
+    </div>
     <div class="main">
       <div class="test"><canvas class="graph"></canvas></div>
       <div class="buttonGraph">
         <div class="button addPeriod">Ajouter une période</div>
-        <div class="button removeDay">-</div>
-        <div class="inputDayNum">
-          <input class="inputNum" type="number" value="8" />
+        <div class="container">
+          <div class="button removeDay">-</div>
+          <div class="inputDayNum">
+            <input class="inputNum" type="number" value="8" />
+          </div>
+          <div class="button addDay">+</div>
         </div>
-        <div class="button addDay">+</div>
         <div class="button removePeriod">Supprimer une periode</div>
         <div class="button magic">magic</div>
       </div>
       <div class="infoPain">
         <div class="colorChoice">
-          <div class="coloGreen"></div>
-          <input class="inputColorGreen" type="number" value="3" />
+          <input class="choiceGreen" type="color" value="#00ff00" />
+          <input class="inputColorGreen" type="number" value="4" />
         </div>
         <div class="colorChoice">
-          <div class="coloYellow"></div>
+          <input class="choiceYellow" type="color" value="#ffbe00" />
           <input class="inputColorYellow" type="number" value="6" />
         </div>
         <div class="colorChoice">
-          <div class="colOrange"></div>
+          <input class="choiceOrange" type="color" value="#ff5a00" />
           <input class="inputColorOrange" type="number" value="8" />
+        </div>
+        <div class="colorChoice">
+          <input type="color" class="choiceRed" value="#ff0000" />
         </div>
         <div class="colorMain">
           <input type="color" class="masterColor" value="#CF48A0" />

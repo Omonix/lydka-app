@@ -1,8 +1,9 @@
 let labelTab = ["1", "2", "3", "4", "5", "6", "7", "8"];
 let dataMaster = [];
-let greenPain = 3;
-let yellowPain = 6;
-let orangePain = 8;
+let greenPain = { value: 4, color: [0, 255, 0] };
+let yellowPain = { value: 6, color: [255, 190, 0] };
+let orangePain = { value: 8, color: [255, 90, 0] };
+let redPain = { value: 10, color: [255, 0, 0] };
 
 const graph = new Chart(document.querySelector(".graph"), {
   type: "line",
@@ -61,10 +62,10 @@ const graph = new Chart(document.querySelector(".graph"), {
     },
   },
 });
-const inputNumHandler = (newValue) => {
+const lb_inputNumHandler = (newValue) => {
   document.querySelector(".inputNum").value = newValue;
 };
-const average = (tab) => {
+const lb_average = (tab) => {
   sum = 0;
   sous = 0;
   for (let i = 0; i < tab.length; i++) {
@@ -76,30 +77,36 @@ const average = (tab) => {
   }
   return sum / (tab.length - sous);
 };
-const levelPain = (values) => {
-  level = average(values);
-  if (level <= greenPain) {
-    color = "rgb(0, 255, 0)";
-    bckcolor = "rgba(0, 255, 0, 0.4)";
-  } else if (level < yellowPain) {
-    color = "rgb(255, 190, 0)";
-    bckcolor = "rgba(255, 190, 0, 0.4)";
-  } else if (level < orangePain) {
-    color = "rgb(255, 90, 0)";
-    bckcolor = "rgba(255, 90, 0, 0.4)";
+const lb_levelPain = (values) => {
+  level = lb_average(values);
+  if (level < greenPain.value) {
+    color = `rgb(${greenPain.color[0]}, ${greenPain.color[1]}, ${greenPain.color[2]})`;
+    bckcolor = `rgba(${greenPain.color[0]}, ${greenPain.color[1]}, ${greenPain.color[2]}, 0.4)`;
+  } else if (level < yellowPain.value) {
+    color = `rgb(${yellowPain.color[0]}, ${yellowPain.color[1]}, ${yellowPain.color[2]})`;
+    bckcolor = `rgb(${yellowPain.color[0]}, ${yellowPain.color[1]}, ${yellowPain.color[2]}, 0.4)`;
+  } else if (level < orangePain.value) {
+    color = `rgb(${orangePain.color[0]}, ${orangePain.color[1]}, ${orangePain.color[2]})`;
+    bckcolor = `rgb(${orangePain.color[0]}, ${orangePain.color[1]}, ${orangePain.color[2]}, 0.4)`;
   } else {
-    color = "rgb(255, 0, 0)";
-    bckcolor = "rgba(255, 0, 0, 0.4)";
+    color = `rgb(${redPain.color[0]}, ${redPain.color[1]}, ${redPain.color[2]})`;
+    bckcolor = `rgb(${redPain.color[0]}, ${redPain.color[1]}, ${redPain.color[2]}, 0.4)`;
   }
   return { color: color, bckcolor: bckcolor };
 };
-const resetGraph = () => {
+const lb_resetGraphColor = () => {
   dataMaster.map((e) => {
-    levelColor = levelPain(e.data);
+    levelColor = lb_levelPain(e.data);
     e.borderColor = levelColor.color;
     e.backgroundColor = levelColor.bckcolor;
   });
   graph.update();
+};
+const lb_hexaToRGB = (hexa) => {
+  r = parseInt(hexa.substring(1, 3), 16);
+  g = parseInt(hexa.substring(3, 5), 16);
+  b = parseInt(hexa.substring(5, hexa.length), 16);
+  return [r, g, b];
 };
 
 document.querySelector(".addPeriod").addEventListener("click", () => {
@@ -114,7 +121,7 @@ document.querySelector(".addPeriod").addEventListener("click", () => {
     }
     i++;
   }
-  levelColor = levelPain(newData, {
+  levelColor = lb_levelPain(newData, {
     green: greenPain,
     yellow: yellowPain,
     orange: orangePain,
@@ -151,7 +158,7 @@ document.querySelector(".addDay").addEventListener("click", () => {
       } else {
         e.data.push(NaN);
       }
-      levelColor = levelPain(e.data, {
+      levelColor = lb_levelPain(e.data, {
         green: greenPain,
         yellow: yellowPain,
         orange: orangePain,
@@ -160,12 +167,12 @@ document.querySelector(".addDay").addEventListener("click", () => {
       e.backgroundColor = levelColor.bckcolor;
     }
   });
-  inputNumHandler(labelTab.length);
+  lb_inputNumHandler(labelTab.length);
   graph.update();
 });
 document.querySelector(".removeDay").addEventListener("click", () => {
   labelTab.pop();
-  inputNumHandler(labelTab.length);
+  lb_inputNumHandler(labelTab.length);
   graph.update();
 });
 document.querySelector(".inputNum").addEventListener("change", () => {
@@ -173,7 +180,7 @@ document.querySelector(".inputNum").addEventListener("change", () => {
     document.querySelector(".inputNum").value < 0 ||
     document.querySelector(".inputNum").value > 250
   ) {
-    inputNumHandler(labelTab.length);
+    lb_inputNumHandler(labelTab.length);
   }
   while (labelTab.length != document.querySelector(".inputNum").value) {
     if (labelTab.length < document.querySelector(".inputNum").value) {
@@ -191,7 +198,7 @@ document.querySelector(".magic").addEventListener("click", () => {
     newData.push(Math.floor(Math.random() * 11));
     i++;
   }
-  levelColor = levelPain(newData, {
+  levelColor = lb_levelPain(newData, {
     green: greenPain,
     yellow: yellowPain,
     orange: orangePain,
@@ -210,39 +217,37 @@ document.querySelector(".inputColorGreen").addEventListener("change", () => {
   const green = parseInt(document.querySelector(".inputColorGreen").value);
   const yellow = parseInt(document.querySelector(".inputColorYellow").value);
   if (isNaN(green) === false && green >= 0 && green < yellow) {
-    greenPain = green;
+    greenPain.value = green;
   } else {
     document.querySelector(".inputColorGreen").value = 3;
   }
-  resetGraph();
+  lb_resetGraphColor();
 });
 document.querySelector(".inputColorYellow").addEventListener("change", () => {
   const green = parseInt(document.querySelector(".inputColorGreen").value);
   const yellow = parseInt(document.querySelector(".inputColorYellow").value);
   const orange = parseInt(document.querySelector(".inputColorOrange").value);
   if (isNaN(yellow) === false && yellow > green && yellow < orange) {
-    yellowPain = yellow;
+    yellowPain.value = yellow;
   } else {
     document.querySelector(".inputColorYellow").value = 6;
   }
-  resetGraph();
+  lb_resetGraphColor();
 });
 document.querySelector(".inputColorOrange").addEventListener("change", () => {
   const yellow = parseInt(document.querySelector(".inputColorYellow").value);
   const orange = parseInt(document.querySelector(".inputColorOrange").value);
   if (isNaN(orange) === false && orange > yellow && orange < 10) {
-    orangePain = orange;
+    orangePain.value = orange;
   } else {
     document.querySelector(".inputColorOrange").value = 8;
   }
-  resetGraph();
+  lb_resetGraphColor();
 });
 document.querySelector(".masterColor").addEventListener("change", () => {
   newrgb = document.querySelector(".masterColor").value;
-  newrgba = `rgba(${parseInt(newrgb.substring(1, 3), 16)}, ${parseInt(
-    newrgb.substring(3, 5),
-    16
-  )}, ${parseInt(newrgb.substring(5, newrgb.length + 1), 16)}, 0.4)`;
+  rgbConvert = lb_hexaToRGB(newrgb);
+  newrgba = `rgba(${rgbConvert[0]}, ${rgbConvert[1]}, ${rgbConvert[2]}, 0.4)`;
   graph.options.scales.x.title.color = newrgb;
   graph.options.scales.y.title.color = newrgb;
   graph.options.plugins.title.color = newrgb;
@@ -253,4 +258,24 @@ document.querySelector(".masterColor").addEventListener("change", () => {
     .querySelector(":root")
     .style.setProperty("--main-color-opacity", newrgba);
   graph.update();
+});
+document.querySelector(".choiceGreen").addEventListener("change", () => {
+  newColor = lb_hexaToRGB(document.querySelector(".choiceGreen").value);
+  greenPain.color = [newColor[0], newColor[1], newColor[2]];
+  lb_resetGraphColor();
+});
+document.querySelector(".choiceYellow").addEventListener("change", () => {
+  newColor = lb_hexaToRGB(document.querySelector(".choiceYellow").value);
+  yellowPain.color = [newColor[0], newColor[1], newColor[2]];
+  lb_resetGraphColor();
+});
+document.querySelector(".choiceOrange").addEventListener("change", () => {
+  newColor = lb_hexaToRGB(document.querySelector(".choiceOrange").value);
+  orangePain.color = [newColor[0], newColor[1], newColor[2]];
+  lb_resetGraphColor();
+});
+document.querySelector(".choiceRed").addEventListener("change", () => {
+  newColor = lb_hexaToRGB(document.querySelector(".choiceRed").value);
+  redPain.color = [newColor[0], newColor[1], newColor[2]];
+  lb_resetGraphColor();
 });

@@ -165,3 +165,9 @@ input:focus {
     width: 1.5em;
     text-align: center;
 }
+.option {
+    background-color: var(--main-color);
+    width: 2.5em;
+    height: 0.35em;
+    margin-bottom: 0.35em;
+}

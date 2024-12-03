@@ -1,67 +1,3 @@
-let labelTab = ["1", "2", "3", "4", "5", "6", "7", "8"];
-let dataMaster = [];
-let greenPain = { value: 4, color: [0, 255, 0] };
-let yellowPain = { value: 6, color: [255, 190, 0] };
-let orangePain = { value: 8, color: [255, 90, 0] };
-let redPain = { value: 10, color: [255, 0, 0] };
-
-const graph = new Chart(document.querySelector(".graph"), {
-  type: "line",
-  data: {
-    labels: labelTab,
-    datasets: dataMaster,
-  },
-  options: {
-    responsive: true,
-    animations: {
-      tension: {
-        duration: 1000,
-        easing: "linear",
-        from: 0.5,
-        to: 0,
-        loop: true,
-      },
-    },
-    interaction: {
-      mode: "index",
-      intersect: false,
-    },
-    plugins: {
-      legend: {
-        position: "top",
-      },
-      title: {
-        display: true,
-        text: "Niveau de douleur pendant la période des règles",
-        color: "rgb(207, 72, 160)",
-      },
-    },
-    scales: {
-      x: {
-        title: {
-          display: true,
-          text: "Jour",
-          color: "rgb(207, 72, 160)",
-        },
-        grid: {
-          color: "rgba(207, 72, 160, 0.4)",
-        },
-      },
-      y: {
-        title: {
-          display: true,
-          text: "Douleur",
-          color: "rgb(207, 72, 160)",
-        },
-        grid: {
-          color: "rgba(207, 72, 160, 0.4)",
-        },
-        suggestedMin: 0,
-        suggestedMax: 10,
-      },
-    },
-  },
-});
 const lb_inputNumHandler = (newValue) => {
   document.querySelector(".inputNum").value = newValue;
 };
@@ -94,7 +30,7 @@ const lb_levelPain = (values) => {
   }
   return { color: color, bckcolor: bckcolor };
 };
-const lb_resetGraphColor = () => {
+const lb_setGraphColor = () => {
   dataMaster.map((e) => {
     levelColor = lb_levelPain(e.data);
     e.borderColor = levelColor.color;
@@ -108,6 +44,105 @@ const lb_hexaToRGB = (hexa) => {
   b = parseInt(hexa.substring(5, hexa.length), 16);
   return [r, g, b];
 };
+const lb_writeData = (data) => {
+  localStorage.setItem("lydka", JSON.stringify(data));
+  return;
+};
+const lb_readData = (data) => {
+  return JSON.parse(localStorage.getItem(data));
+};
+const lb_setData = (data) => {
+  if (localStorage.getItem(data) === null) {
+    return {
+      dataMaster: [],
+      labelTab: ["1", "2", "3", "4", "5", "6", "7", "8"],
+      greenPain: { value: 4, color: [0, 255, 0] },
+      yellowPain: { value: 6, color: [255, 190, 0] },
+      orangePain: { value: 8, color: [255, 90, 0] },
+      redPain: { value: 10, color: [255, 0, 0] },
+      mainColor: {
+        text: "rgb(207, 72, 160)",
+        background: "rgba(207, 72, 160, 0.4)",
+      },
+    };
+  } else {
+    return lb_readData("lydka");
+  }
+};
+const lb_setMainColor = (newrgb, newrgba) => {
+  document.querySelector(":root").style.setProperty("--main-color", newrgb);
+  document
+    .querySelector(":root")
+    .style.setProperty("--main-color-opacity", newrgba);
+};
+
+const defaulter = lb_setData("lydka");
+let greenPain = defaulter.greenPain;
+let yellowPain = defaulter.yellowPain;
+let orangePain = defaulter.orangePain;
+let redPain = defaulter.redPain;
+let labelTab = defaulter.labelTab;
+let dataMaster = defaulter.dataMaster;
+
+const graph = new Chart(document.querySelector(".graph"), {
+  type: "line",
+  data: {
+    labels: labelTab,
+    datasets: dataMaster,
+  },
+  options: {
+    responsive: true,
+    animations: {
+      tension: {
+        duration: 1000,
+        easing: "linear",
+        from: 0.5,
+        to: 0,
+        loop: true,
+      },
+    },
+    interaction: {
+      mode: "index",
+      intersect: false,
+    },
+    plugins: {
+      legend: {
+        position: "top",
+      },
+      title: {
+        display: true,
+        text: "Niveau de douleur pendant la période des règles",
+        color: defaulter.mainColor.text,
+      },
+    },
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: "Jour",
+          color: defaulter.mainColor.text,
+        },
+        grid: {
+          color: defaulter.mainColor.background,
+        },
+      },
+      y: {
+        title: {
+          display: true,
+          text: "Douleur",
+          color: defaulter.mainColor.text,
+        },
+        grid: {
+          color: defaulter.mainColor.background,
+        },
+        suggestedMin: 0,
+        suggestedMax: 10,
+      },
+    },
+  },
+});
+lb_setGraphColor();
+lb_setMainColor(defaulter.mainColor.text, defaulter.mainColor.background);
 
 document.querySelector(".addPeriod").addEventListener("click", () => {
   let newData = [];
@@ -121,11 +156,7 @@ document.querySelector(".addPeriod").addEventListener("click", () => {
     }
     i++;
   }
-  levelColor = lb_levelPain(newData, {
-    green: greenPain,
-    yellow: yellowPain,
-    orange: orangePain,
-  });
+  levelColor = lb_levelPain(newData);
   dataMaster.push({
     label: prompt(`Nom de la nouvelle période ${dataMaster.length + 1}`),
     data: newData,
@@ -134,6 +165,9 @@ document.querySelector(".addPeriod").addEventListener("click", () => {
     pointRadius: 5,
     pointHoverRadius: 10,
   });
+  let saved = lb_readData("lydka");
+  saved.dataMaster = dataMaster;
+  lb_writeData(saved);
   graph.update();
 });
 document.querySelector(".removePeriod").addEventListener("click", () => {
@@ -146,6 +180,9 @@ document.querySelector(".removePeriod").addEventListener("click", () => {
       dataMaster.splice(i, 1);
     }
   });
+  let saved = lb_readData("lydka");
+  saved.dataMaster = dataMaster;
+  lb_writeData(saved);
   graph.update();
 });
 document.querySelector(".addDay").addEventListener("click", () => {
@@ -158,21 +195,24 @@ document.querySelector(".addDay").addEventListener("click", () => {
       } else {
         e.data.push(NaN);
       }
-      levelColor = lb_levelPain(e.data, {
-        green: greenPain,
-        yellow: yellowPain,
-        orange: orangePain,
-      });
+      levelColor = lb_levelPain(e.data);
       e.borderColor = levelColor.color;
       e.backgroundColor = levelColor.bckcolor;
     }
   });
   lb_inputNumHandler(labelTab.length);
+  let saved = lb_readData("lydka");
+  saved.dataMaster = dataMaster;
+  saved.labelTab = labelTab;
+  lb_writeData(saved);
   graph.update();
 });
 document.querySelector(".removeDay").addEventListener("click", () => {
   labelTab.pop();
   lb_inputNumHandler(labelTab.length);
+  let saved = lb_readData("lydka");
+  saved.labelTab = labelTab;
+  lb_writeData(saved);
   graph.update();
 });
 document.querySelector(".inputNum").addEventListener("change", () => {
@@ -188,6 +228,9 @@ document.querySelector(".inputNum").addEventListener("change", () => {
     } else if (labelTab.length > document.querySelector(".inputNum").value) {
       labelTab.pop();
     }
+    let saved = lb_readData("lydka");
+    saved.labelTab = labelTab;
+    lb_writeData(saved);
   }
   graph.update();
 });
@@ -198,11 +241,7 @@ document.querySelector(".magic").addEventListener("click", () => {
     newData.push(Math.floor(Math.random() * 11));
     i++;
   }
-  levelColor = lb_levelPain(newData, {
-    green: greenPain,
-    yellow: yellowPain,
-    orange: orangePain,
-  });
+  levelColor = lb_levelPain(newData);
   dataMaster.push({
     label: "testr",
     data: newData,
@@ -211,93 +250,8 @@ document.querySelector(".magic").addEventListener("click", () => {
     pointRadius: 5,
     pointHoverRadius: 10,
   });
+  let saved = lb_readData("lydka");
+  saved.dataMaster = dataMaster;
+  lb_writeData(saved);
   graph.update();
-});
-document.querySelector(".inputColorGreen").addEventListener("change", () => {
-  const green = parseInt(document.querySelector(".inputColorGreen").value);
-  const yellow = parseInt(document.querySelector(".inputColorYellow").value);
-  if (isNaN(green) === false && green >= 0 && green < yellow) {
-    greenPain.value = green;
-  } else {
-    document.querySelector(".inputColorGreen").value = 3;
-  }
-  lb_resetGraphColor();
-});
-document.querySelector(".inputColorYellow").addEventListener("change", () => {
-  const green = parseInt(document.querySelector(".inputColorGreen").value);
-  const yellow = parseInt(document.querySelector(".inputColorYellow").value);
-  const orange = parseInt(document.querySelector(".inputColorOrange").value);
-  if (isNaN(yellow) === false && yellow > green && yellow < orange) {
-    yellowPain.value = yellow;
-  } else {
-    document.querySelector(".inputColorYellow").value = 6;
-  }
-  lb_resetGraphColor();
-});
-document.querySelector(".inputColorOrange").addEventListener("change", () => {
-  const yellow = parseInt(document.querySelector(".inputColorYellow").value);
-  const orange = parseInt(document.querySelector(".inputColorOrange").value);
-  if (isNaN(orange) === false && orange > yellow && orange < 10) {
-    orangePain.value = orange;
-  } else {
-    document.querySelector(".inputColorOrange").value = 8;
-  }
-  lb_resetGraphColor();
-});
-document.querySelector(".masterColor").addEventListener("change", () => {
-  newrgb = document.querySelector(".masterColor").value;
-  rgbConvert = lb_hexaToRGB(newrgb);
-  newrgba = `rgba(${rgbConvert[0]}, ${rgbConvert[1]}, ${rgbConvert[2]}, 0.4)`;
-  graph.options.scales.x.title.color = newrgb;
-  graph.options.scales.y.title.color = newrgb;
-  graph.options.plugins.title.color = newrgb;
-  graph.options.scales.x.grid.color = newrgba;
-  graph.options.scales.y.grid.color = newrgba;
-  document.querySelector(":root").style.setProperty("--main-color", newrgb);
-  document
-    .querySelector(":root")
-    .style.setProperty("--main-color-opacity", newrgba);
-  graph.update();
-});
-document.querySelector(".choiceGreen").addEventListener("change", () => {
-  newColor = lb_hexaToRGB(document.querySelector(".choiceGreen").value);
-  greenPain.color = [newColor[0], newColor[1], newColor[2]];
-  lb_resetGraphColor();
-});
-document.querySelector(".choiceYellow").addEventListener("change", () => {
-  newColor = lb_hexaToRGB(document.querySelector(".choiceYellow").value);
-  yellowPain.color = [newColor[0], newColor[1], newColor[2]];
-  lb_resetGraphColor();
-});
-document.querySelector(".choiceOrange").addEventListener("change", () => {
-  newColor = lb_hexaToRGB(document.querySelector(".choiceOrange").value);
-  orangePain.color = [newColor[0], newColor[1], newColor[2]];
-  lb_resetGraphColor();
-});
-document.querySelector(".choiceRed").addEventListener("change", () => {
-  newColor = lb_hexaToRGB(document.querySelector(".choiceRed").value);
-  redPain.color = [newColor[0], newColor[1], newColor[2]];
-  lb_resetGraphColor();
-});
-document.querySelector(".modeSwitcher").addEventListener("click", () => {
-  mode = document.querySelector(".modeSwitcher").innerHTML;
-  if (mode === "Dark") {
-    document.querySelector(".modeSwitcher").innerHTML = "Light";
-    document
-      .querySelector(":root")
-      .style.setProperty("--main-background", "#dee1e0");
-    document.querySelector(":root").style.setProperty("--color", "#dee1e0");
-    document
-      .querySelector(":root")
-      .style.setProperty("--reverse-color", "#000000");
-  } else {
-    document.querySelector(".modeSwitcher").innerHTML = "Dark";
-    document
-      .querySelector(":root")
-      .style.setProperty("--main-background", "#0f0f0f");
-    document.querySelector(":root").style.setProperty("--color", "#000000");
-    document
-      .querySelector(":root")
-      .style.setProperty("--reverse-color", "##dee1e0");
-  }
 });

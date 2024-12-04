@@ -15,18 +15,19 @@ const lb_average = (tab) => {
 };
 const lb_levelPain = (values) => {
   level = lb_average(values);
-  if (level < greenPain.value) {
-    color = `rgb(${greenPain.color[0]}, ${greenPain.color[1]}, ${greenPain.color[2]})`;
-    bckcolor = `rgba(${greenPain.color[0]}, ${greenPain.color[1]}, ${greenPain.color[2]}, 0.4)`;
-  } else if (level < yellowPain.value) {
-    color = `rgb(${yellowPain.color[0]}, ${yellowPain.color[1]}, ${yellowPain.color[2]})`;
-    bckcolor = `rgb(${yellowPain.color[0]}, ${yellowPain.color[1]}, ${yellowPain.color[2]}, 0.4)`;
-  } else if (level < orangePain.value) {
-    color = `rgb(${orangePain.color[0]}, ${orangePain.color[1]}, ${orangePain.color[2]})`;
-    bckcolor = `rgb(${orangePain.color[0]}, ${orangePain.color[1]}, ${orangePain.color[2]}, 0.4)`;
+  oldData = lb_readData("lydka");
+  if (level < oldData.greenPain.value) {
+    color = `rgb(${oldData.greenPain.color[0]}, ${oldData.greenPain.color[1]}, ${oldData.greenPain.color[2]})`;
+    bckcolor = `rgba(${oldData.greenPain.color[0]}, ${oldData.greenPain.color[1]}, ${oldData.greenPain.color[2]}, 0.4)`;
+  } else if (level < oldData.yellowPain.value) {
+    color = `rgb(${oldData.yellowPain.color[0]}, ${oldData.yellowPain.color[1]}, ${oldData.yellowPain.color[2]})`;
+    bckcolor = `rgb(${oldData.yellowPain.color[0]}, ${oldData.yellowPain.color[1]}, ${oldData.yellowPain.color[2]}, 0.4)`;
+  } else if (level < oldData.orangePain.value) {
+    color = `rgb(${oldData.orangePain.color[0]}, ${oldData.orangePain.color[1]}, ${oldData.orangePain.color[2]})`;
+    bckcolor = `rgb(${oldData.orangePain.color[0]}, ${oldData.orangePain.color[1]}, ${oldData.orangePain.color[2]}, 0.4)`;
   } else {
-    color = `rgb(${redPain.color[0]}, ${redPain.color[1]}, ${redPain.color[2]})`;
-    bckcolor = `rgb(${redPain.color[0]}, ${redPain.color[1]}, ${redPain.color[2]}, 0.4)`;
+    color = `rgb(${oldData.redPain.color[0]}, ${oldData.redPain.color[1]}, ${oldData.redPain.color[2]})`;
+    bckcolor = `rgb(${oldData.redPain.color[0]}, ${oldData.redPain.color[1]}, ${oldData.redPain.color[2]}, 0.4)`;
   }
   return { color: color, bckcolor: bckcolor };
 };
@@ -53,7 +54,7 @@ const lb_readData = (data) => {
 };
 const lb_setData = (data) => {
   if (localStorage.getItem(data) === null) {
-    return {
+    newData = {
       dataMaster: [],
       labelTab: ["1", "2", "3", "4", "5", "6", "7", "8"],
       greenPain: { value: 4, color: [0, 255, 0] },
@@ -64,25 +65,32 @@ const lb_setData = (data) => {
         text: "rgb(207, 72, 160)",
         background: "rgba(207, 72, 160, 0.4)",
       },
+      mode: { normal: "rgb(15, 15, 15)", reverse: "#dee1e0", name: "Dark" },
     };
+    lb_writeData(newData);
+    return newData;
   } else {
     return lb_readData("lydka");
   }
 };
-const lb_setMainColor = (newrgb, newrgba) => {
+const lb_setMainColor = (newrgb, newrgba, norm, rev) => {
   document.querySelector(":root").style.setProperty("--main-color", newrgb);
   document
     .querySelector(":root")
     .style.setProperty("--main-color-opacity", newrgba);
+  document.querySelector(":root").style.setProperty("--main-background", norm);
+  document.querySelector(":root").style.setProperty("--reverse-color", rev);
 };
 
 const defaulter = lb_setData("lydka");
-let greenPain = defaulter.greenPain;
-let yellowPain = defaulter.yellowPain;
-let orangePain = defaulter.orangePain;
-let redPain = defaulter.redPain;
 let labelTab = defaulter.labelTab;
 let dataMaster = defaulter.dataMaster;
+lb_setMainColor(
+  defaulter.mainColor.text,
+  defaulter.mainColor.background,
+  defaulter.mode.normal,
+  defaulter.mode.reverse
+);
 
 const graph = new Chart(document.querySelector(".graph"), {
   type: "line",
@@ -142,7 +150,6 @@ const graph = new Chart(document.querySelector(".graph"), {
   },
 });
 lb_setGraphColor();
-lb_setMainColor(defaulter.mainColor.text, defaulter.mainColor.background);
 
 document.querySelector(".addPeriod").addEventListener("click", () => {
   let newData = [];

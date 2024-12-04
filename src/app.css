@@ -1,7 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&family=Playwrite+HR+Lijeva:wght@100..400&display=swap');
-* {
-    transition-duration: 300ms;
-}
 :root {
     --main-color: rgb(207, 72, 160);
     --main-color-opacity: rgba(207, 72, 160, 0.4);
